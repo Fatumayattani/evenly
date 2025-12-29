@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import LandingPage from './components/LandingPage';
-import AuthModal from './components/AuthModal';
 import Dashboard from './components/Dashboard';
 import { User } from './types';
+import WalletSection from './components/WalletSection';
 
 function App() {
   const [showAuth, setShowAuth] = useState(false);
@@ -31,7 +31,7 @@ function App() {
     <>
       <LandingPage onGetStarted={() => setShowAuth(true)} />
       {showAuth && (
-        <AuthModal onClose={() => setShowAuth(false)} onAuth={handleAuth} />
+        <WalletSection onClose={() => setShowAuth(false)} onAuth={handleAuth} />
       )}
     </>
   );
