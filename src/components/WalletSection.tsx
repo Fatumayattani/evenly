@@ -1,18 +1,25 @@
 import { Wallet, Copy, ExternalLink, ArrowUpRight, ArrowDownRight, CheckCircle } from 'lucide-react';
-import { User } from '../types';
-import { useState } from 'react';
+import { useWallets, useCreateWallet } from '@privy-io/react-auth';
+import { useState, useEffect } from 'react';
 
-interface WalletSectionProps {
-  user: User;
-}
-
-export default function WalletSection({ user }: WalletSectionProps) {
+export default function WalletSection() {
+  const { wallets } = useWallets();
+  const { createWallet } = useCreateWallet();
+  const [wallet, setWallet] = useState<any>(null);
   const [copied, setCopied] = useState(false);
 
-  const mockWalletAddress = '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb';
-  const mockBalance = 245.67;
+  useEffect(() => {
+    if (wallets && wallets.length > 0) {
+      setWallet(wallets[0]);
+    } else {
+      createWallet().then((newWallet) => setWallet(newWallet));
+    }
+  }, [wallets, createWallet]);
 
-  const mockTransactions = [
+  const walletAddress = wallet?.address ?? 'Wallet not connected';
+  const walletBalance = wallet?.balance?.toFixed(2) ?? '0.00';
+
+  const transactions = [
     {
       id: '1',
       type: 'receive' as const,
@@ -31,21 +38,14 @@ export default function WalletSection({ user }: WalletSectionProps) {
       date: new Date(Date.now() - 86400000).toISOString(),
       status: 'completed' as const,
     },
-    {
-      id: '3',
-      type: 'receive' as const,
-      amount: 1200,
-      from: 'Jane Smith',
-      description: 'Monthly Rent split',
-      date: new Date(Date.now() - 172800000).toISOString(),
-      status: 'completed' as const,
-    },
   ];
 
   const copyAddress = () => {
-    navigator.clipboard.writeText(mockWalletAddress);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (walletAddress !== 'Wallet not connected') {
+      navigator.clipboard.writeText(walletAddress);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
@@ -57,24 +57,20 @@ export default function WalletSection({ user }: WalletSectionProps) {
           </div>
           <div>
             <div className="text-sm opacity-90">Wallet Balance</div>
-            <div className="text-4xl font-bold">${mockBalance.toFixed(2)}</div>
+            <div className="text-4xl font-bold">${walletBalance}</div>
           </div>
         </div>
 
         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
           <div className="text-xs opacity-75 mb-2">Wallet Address</div>
           <div className="flex items-center justify-between gap-4">
-            <code className="text-sm font-mono">{mockWalletAddress}</code>
+            <code className="text-sm font-mono">{walletAddress}</code>
             <button
               onClick={copyAddress}
               className="p-2 hover:bg-white/20 rounded-lg transition-colors flex-shrink-0"
               title="Copy address"
             >
-              {copied ? (
-                <CheckCircle className="w-5 h-5" />
-              ) : (
-                <Copy className="w-5 h-5" />
-              )}
+              {copied ? <CheckCircle className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -104,7 +100,7 @@ export default function WalletSection({ user }: WalletSectionProps) {
         </div>
 
         <div className="space-y-3">
-          {mockTransactions.map((tx) => (
+          {transactions.map((tx) => (
             <div
               key={tx.id}
               className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
@@ -112,16 +108,10 @@ export default function WalletSection({ user }: WalletSectionProps) {
               <div className="flex items-center gap-4">
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    tx.type === 'receive'
-                      ? 'bg-green-100 text-green-600'
-                      : 'bg-red-100 text-red-600'
+                    tx.type === 'receive' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
                   }`}
                 >
-                  {tx.type === 'receive' ? (
-                    <ArrowDownRight className="w-5 h-5" />
-                  ) : (
-                    <ArrowUpRight className="w-5 h-5" />
-                  )}
+                  {tx.type === 'receive' ? <ArrowDownRight className="w-5 h-5" /> : <ArrowUpRight className="w-5 h-5" />}
                 </div>
                 <div>
                   <div className="font-medium">{tx.description}</div>
@@ -135,11 +125,7 @@ export default function WalletSection({ user }: WalletSectionProps) {
                 </div>
               </div>
               <div className="text-right">
-                <div
-                  className={`font-semibold ${
-                    tx.type === 'receive' ? 'text-green-600' : 'text-red-600'
-                  }`}
-                >
+                <div className={`font-semibold ${tx.type === 'receive' ? 'text-green-600' : 'text-red-600'}`}>
                   {tx.type === 'receive' ? '+' : '-'}${tx.amount.toFixed(2)}
                 </div>
                 <div className="text-xs text-gray-500 flex items-center gap-1">
@@ -155,10 +141,10 @@ export default function WalletSection({ user }: WalletSectionProps) {
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 border border-blue-100">
         <h4 className="font-semibold mb-2 flex items-center gap-2">
           <span className="text-xl">⚡</span>
-          Powered by Movement
+          Powered by Privy
         </h4>
         <p className="text-sm text-gray-600 leading-relaxed">
-          Your wallet uses Movement blockchain for instant, low-cost transactions. All payments are secured and transparent.
+          Your wallet is powered by Privy. All payments are secured, transparent, and blockchain-ready.
         </p>
       </div>
     </div>
