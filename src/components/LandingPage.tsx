@@ -37,12 +37,13 @@ export default function LandingPage(props: LandingPageProps) {
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50">
       <nav className="px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-400 rounded-xl flex items-center justify-center">
-            <Home className="w-6 h-6 text-white" />
+          <div className="flex items-center gap-3">
+            <img
+            src="/evenlogo.png"
+            alt="Evenly logo"
+            className="w-24 h-24 rounded-xl object-contain"
+           />
           </div>
-          <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
-            Evenly
-          </span>
         </div>
         <button
           onClick={onGetStarted}
