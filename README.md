@@ -54,7 +54,6 @@ Evenly is a modern household expense tracker that makes sharing costs simple, tr
 * **Frontend:** React 18 + TypeScript + Vite
 * **Styling:** Tailwind CSS
 * **Authentication:** Privy (embedded wallet)
-* **Database:** Bolt Database
 * **Blockchain:** Movement
 * **Icons:** Lucide React
 * **Build Tool:** Vite
@@ -65,7 +64,6 @@ Evenly is a modern household expense tracker that makes sharing costs simple, tr
 
 * Node.js 18+ and npm
 * Privy account and App ID ([Get started](#))
-* Bolt Database project ([Create one](#))
 
 ---
 
@@ -74,7 +72,7 @@ Evenly is a modern household expense tracker that makes sharing costs simple, tr
 1. **Clone the repository**
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Fatumayattani/evenly.git
 cd evenly
 ```
 
@@ -89,8 +87,6 @@ npm install
 
 ```env
 VITE_PRIVY_APP_ID=your_privy_app_id
-VITE_SUPABASE_URL=your_bolt_database_url
-VITE_SUPABASE_ANON_KEY=your_bolt_database_anon_key
 ```
 
 4. **Run the app**
@@ -158,30 +154,30 @@ evenly/
    * Net balance
 6. **Instant Settlement:** Payments are processed instantly via embedded wallets on the Movement blockchain.
 
-Key Features in Detail
-Expense Categories
-Rent: Monthly rent payments
-Utilities: Electricity, water, internet, gas
-Groceries: Shared food and household items
-Subscriptions: Netflix, Spotify, shared services
-Other: Miscellaneous shared expenses
-Balance Tracking
-See total expenses you've paid
-Track how much you owe others
-View net balance across all expenses
-Filter by household or time period
-Wallet Section
-View your embedded wallet address
-Check wallet balance
-Transaction history
-Secure and transparent
-Environment Configuration
-Variable	Description	Required
-VITE_PRIVY_APP_ID	Your Privy application ID	Yes
-VITE_SUPABASE_URL	Your Bolt Database project URL	Yes
-VITE_SUPABASE_ANON_KEY	Your Bolt Database anonymous key	Yes
-Deployment
-The app can be deployed to any static hosting service:
+---
+
+## Expense Categories
+
+* **Rent:** Monthly rent payments
+* **Utilities:** Electricity, water, internet, gas
+* **Groceries:** Shared food and household items
+* **Subscriptions:** Netflix, Spotify, shared services
+* **Other:** Miscellaneous expenses
+
+---
+
+## Wallet Section
+
+* View embedded wallet address
+* Check wallet balance
+* Transaction history
+* Secure and transparent
+
+---
+
+## Deployment
+
+Deploy to any static hosting service:
 
 * Vercel: `vercel deploy`
 * Netlify: `netlify deploy --prod`
@@ -195,7 +191,6 @@ Set environment variables in your hosting platform dashboard.
 ## Security Best Practices
 
 * Never commit `.env` to version control
-* Use Row Level Security (RLS) in Bolt Database
 * Validate all user inputs
 * Keep dependencies updated
 * Use HTTPS in production
