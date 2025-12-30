@@ -1,20 +1,49 @@
 import { Home, Zap, Shield, DollarSign, Users, ArrowRight } from 'lucide-react';
+import { usePrivy, useCreateWallet, useWallets } from '@privy-io/react-auth';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
-interface LandingPageProps {
-  onGetStarted: () => void;
-}
+interface LandingPageProps {}
 
-export default function LandingPage({ onGetStarted }: LandingPageProps) {
+export default function LandingPage(props: LandingPageProps) {
+  const { login, user } = usePrivy();
+  const { wallets } = useWallets();
+  const { createWallet } = useCreateWallet();
+  const navigate = useNavigate();
+
+  // Automatically create a wallet if none exists after login
+  useEffect(() => {
+    const setupWallet = async () => {
+      if (user && wallets.length === 0) {
+        await createWallet();
+      }
+    };
+    setupWallet();
+  }, [user, wallets, createWallet]);
+
+  const onGetStarted = async () => {
+    try {
+      await login(); // triggers Privy login modal
+      if (wallets.length === 0) {
+        await createWallet();
+      }
+      navigate('/dashboard');
+    } catch (err) {
+      console.error('Privy login failed', err);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50">
       <nav className="px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-400 rounded-xl flex items-center justify-center">
-            <Home className="w-6 h-6 text-white" />
+          <div className="flex items-center gap-3">
+            <img
+            src="/evenlogo.png"
+            alt="Evenly logo"
+            className="w-24 h-24 rounded-xl object-contain"
+           />
           </div>
-          <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
-            Evenly
-          </span>
         </div>
         <button
           onClick={onGetStarted}
