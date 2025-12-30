@@ -34,7 +34,6 @@ Tech Stack
 Frontend: React 18 + TypeScript + Vite
 Styling: Tailwind CSS
 Authentication: Privy (embedded wallet)
-Database: Bolt Database
 Blockchain: Movement
 Icons: Lucide React
 Build Tool: Vite
@@ -45,7 +44,7 @@ Bolt Database project (Create one)
 Installation
 Clone the repository
 
-git clone <repository-url>
+git clone https://github.com/Fatumayattani/evenly.git
 cd evenly
 Install dependencies
 
@@ -128,8 +127,6 @@ Secure and transparent
 Environment Configuration
 Variable	Description	Required
 VITE_PRIVY_APP_ID	Your Privy application ID	Yes
-VITE_SUPABASE_URL	Your Bolt Database project URL	Yes
-VITE_SUPABASE_ANON_KEY	Your Bolt Database anonymous key	Yes
 Deployment
 The app can be deployed to any static hosting service:
 
