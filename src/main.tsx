@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import ReactDOM from 'react-dom/client';
 import React from 'react';
+import { WalletProvider } from './context/WalletContext';
 import './index.css';
 
 const PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID;
@@ -10,9 +11,11 @@ const PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID;
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <PrivyProvider appId={PRIVY_APP_ID}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <WalletProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </WalletProvider>
     </PrivyProvider>
   </React.StrictMode>
 );

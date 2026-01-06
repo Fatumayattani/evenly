@@ -1,7 +1,7 @@
 import { Home, Zap, Shield, DollarSign, Users, ArrowRight } from 'lucide-react';
 import { usePrivy, useCreateWallet, useWallets } from '@privy-io/react-auth';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface LandingPageProps {}
 
@@ -11,27 +11,31 @@ export default function LandingPage(props: LandingPageProps) {
   const { createWallet } = useCreateWallet();
   const navigate = useNavigate();
 
-  // Automatically create a wallet if none exists after login
+  const [initialized, setInitialized] = useState(false);
+
+  // Only run once after user is detected
   useEffect(() => {
     const setupWallet = async () => {
-      if (user && wallets.length === 0) {
-        await createWallet();
+      if (user && !initialized) {
+        if (wallets.length === 0) {
+          try {
+            await createWallet();
+          } catch (err) {
+            console.warn('Wallet already exists or error creating it', err);
+          }
+        }
+        setInitialized(true);
+        navigate('/dashboard'); // Navigate automatically if user exists
       }
     };
     setupWallet();
-  }, [user, wallets, createWallet]);
+  }, [user, wallets, createWallet, navigate, initialized]);
 
-  const onGetStarted = async () => {
-    try {
-      await login(); // triggers Privy login modal
-      if (wallets.length === 0) {
-        await createWallet();
-      }
-      navigate('/dashboard');
-    } catch (err) {
-      console.error('Privy login failed', err);
-    }
-  };
+ const onGetStarted = async () => {
+  // Directly navigate to dashboard without wallet/login checks
+  navigate('/dashboard');
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50">
@@ -39,10 +43,10 @@ export default function LandingPage(props: LandingPageProps) {
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-3">
             <img
-            src="/evenlogo.png"
-            alt="Evenly logo"
-            className="w-24 h-24 rounded-xl object-contain"
-           />
+              src="/evenlogo.png"
+              alt="Evenly logo"
+              className="w-24 h-24 rounded-xl object-contain"
+            />
           </div>
         </div>
         <button
@@ -67,12 +71,13 @@ export default function LandingPage(props: LandingPageProps) {
               No more awkward money conversations. Evenly makes sharing household expenses simple, transparent, and instant with blockchain-powered payments.
             </p>
             <button
-              onClick={onGetStarted}
-              className="px-10 py-4 bg-gradient-to-r from-primary-500 to-accent-400 text-white rounded-full text-lg font-semibold hover:shadow-2xl hover:scale-105 transition-all inline-flex items-center gap-2"
-            >
-              Start Splitting Now
-              <ArrowRight className="w-5 h-5" />
-            </button>
+  onClick={onGetStarted}
+  className="px-10 py-4 bg-gradient-to-r from-primary-500 to-accent-400 text-white rounded-full text-lg font-semibold hover:shadow-2xl hover:scale-105 transition-all inline-flex items-center gap-2"
+>
+  Start Splitting Now
+  <ArrowRight className="w-5 h-5" />
+</button>
+
           </div>
 
           <div className="relative">
@@ -139,10 +144,8 @@ export default function LandingPage(props: LandingPageProps) {
         </div>
       </main>
 
-      <footer className="mt-32 py-12 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 text-center text-gray-500">
-          <p>© 2024 Evenly. Making shared living simpler.</p>
-        </div>
+      <footer className="mt-32 py-12 border-t border-gray-200 text-center text-gray-500">
+        © 2024 Evenly. Making shared living simpler.
       </footer>
     </div>
   );

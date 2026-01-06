@@ -39,7 +39,7 @@ export default function Dashboard({ user, onLogout }: DashboardProps) {
     {
       id: '3',
       title: 'Grocery Shopping',
-      amount: 85.50,
+      amount: 85.5,
       category: 'groceries',
       paidBy: user,
       splitWith: [user, { id: '2', email: 'jane@example.com', name: 'Jane Smith' }],

@@ -1,12 +1,15 @@
 import { useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import Dashboard from './components/Dashboard';
-import { User } from './types';
 import WalletSection from './components/WalletSection';
+import { User } from './types';
 
 function App() {
-  const [showAuth, setShowAuth] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [showAuth, setShowAuth] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleAuth = (email: string, name: string) => {
     const user: User = {
@@ -17,23 +20,38 @@ function App() {
     };
     setCurrentUser(user);
     setShowAuth(false);
+    navigate('/dashboard'); // go to dashboard immediately
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
+    navigate('/'); // back to landing
   };
 
-  if (currentUser) {
-    return <Dashboard user={currentUser} onLogout={handleLogout} />;
-  }
-
   return (
-    <>
-      <LandingPage onGetStarted={() => setShowAuth(true)} />
-      {showAuth && (
-        <WalletSection onClose={() => setShowAuth(false)} onAuth={handleAuth} />
-      )}
-    </>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <>
+            <LandingPage onGetStarted={() => setShowAuth(true)} />
+            {showAuth && (
+              <WalletSection onClose={() => setShowAuth(false)} onAuth={handleAuth} />
+            )}
+          </>
+        }
+      />
+      <Route
+        path="/dashboard"
+        element={
+          currentUser ? (
+            <Dashboard user={currentUser} onLogout={handleLogout} />
+          ) : (
+            <LandingPage onGetStarted={() => setShowAuth(true)} />
+          )
+        }
+      />
+    </Routes>
   );
 }
 

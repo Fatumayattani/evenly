@@ -2,18 +2,31 @@ import { Wallet, Copy, ExternalLink, ArrowUpRight, ArrowDownRight, CheckCircle }
 import { useWallets, useCreateWallet } from '@privy-io/react-auth';
 import { useState, useEffect } from 'react';
 
-export default function WalletSection() {
+interface WalletSectionProps {
+  user: any; // keep your current typing
+}
+
+export default function WalletSection({ user }: WalletSectionProps) {
   const { wallets } = useWallets();
   const { createWallet } = useCreateWallet();
   const [wallet, setWallet] = useState<any>(null);
   const [copied, setCopied] = useState(false);
 
+  // SAFE wallet setup: only create wallet if none exists, ignore errors
   useEffect(() => {
-    if (wallets && wallets.length > 0) {
-      setWallet(wallets[0]);
-    } else {
-      createWallet().then((newWallet) => setWallet(newWallet));
-    }
+    const setupWallet = async () => {
+      if (wallets && wallets.length > 0) {
+        setWallet(wallets[0]);
+      } else {
+        try {
+          const newWallet = await createWallet();
+          setWallet(newWallet);
+        } catch (err) {
+          console.warn('Wallet creation skipped:', err);
+        }
+      }
+    };
+    setupWallet();
   }, [wallets, createWallet]);
 
   const walletAddress = wallet?.address ?? 'Wallet not connected';
