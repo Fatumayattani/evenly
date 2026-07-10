@@ -1,63 +1,121 @@
-# Solana Financial Coordination MVP
+# Evenly
 
-A working product prototype for coordinating personal and shared financial commitments on Solana.
+**Evenly is a Solana-powered financial coordination app that helps people prepare personal expenses and shared financial commitments whenever money comes in.**
 
-The product deliberately has **no final brand name yet**. The interface is organized around two universal spaces:
+Instead of only showing where money was spent, Evenly helps users decide where it should go before important payments are due.
 
-- **Life** — income, upcoming bills, personal payday buffer, emergency savings, taxes, and selected shared household expenses.
-- **Groups** — any multi-person contribution arrangement with shared goals, transparent commitments, a treasury, and approval rules.
+## The problem
 
-## Signature behavior
+People often receive income at different times while rent, bills, savings goals, and group contributions remain fixed.
 
-When income arrives, allocation rules prepare the things that matter before their due dates. The app shows each commitment as **Ready**, **Building**, or **At risk**.
+Managing these commitments across spreadsheets, wallets, banking apps, and group chats creates missed payments, confusion, and disputes.
 
-## Included
+## The solution
 
-- Polished mobile-first Next.js application
-- Real browser-wallet connection on Solana Devnet
-- Gas-sponsored onchain proof receipts using the Solana Memo program
-- Deterministic allocation engine with integer-safe rounding
-- Life dashboard and automatic income allocation
-- Group contribution readiness and treasury tracking
-- Multi-approval payout demo
-- Local persistence for a complete demo without a backend
-- Anchor program source for token-backed group treasuries and approval-controlled payouts
-- Unit tests for the allocation engine
+Evenly automatically divides incoming money according to the user’s priorities.
 
-## Run the web app
+Example:
+
+```text
+Payment received: 1,000 USDC
+
+Available spending       400 USDC
+Rent and bills           250 USDC
+Emergency savings        150 USDC
+Payday buffer            100 USDC
+Group contribution        75 USDC
+Tax reserve               25 USDC
+```
+
+Users can immediately see which commitments are:
+
+* Ready
+* Building
+* At risk
+
+## Product areas
+
+### Life
+
+Manage:
+
+* Income
+* Spending
+* Rent and bills
+* Emergency savings
+* Personal payday
+* Savings goals
+* Shared household expenses
+
+### Groups
+
+Coordinate money with other people through:
+
+* Recurring contributions
+* Shared savings goals
+* Rotating payouts
+* Emergency funds
+* Shared treasuries
+* Approval-based withdrawals
+* Contribution records
+
+Personal finances remain private while shared commitments and shared money remain transparent.
+
+## Why Solana
+
+Solana powers:
+
+* Fast stablecoin payments
+* Low-cost contribution transfers
+* Programmable allocation rules
+* Shared treasury accounts
+* Multi-member approvals
+* Verifiable contribution receipts
+* Cross-border participation
+
+Blockchain details remain hidden from normal users.
+
+## Current MVP
+
+The current build includes:
+
+* Life dashboard
+* Income allocation rules
+* Bills and savings preparation
+* Readiness tracking
+* Group creation
+* Member contribution tracking
+* Treasury proposal flows
+* Solana wallet connection
+* Devnet proof transactions
+* Anchor treasury program source
+
+The Life and Groups balances currently use a local demo ledger.
+
+The Anchor program has not yet been deployed or connected to the frontend.
+
+## Run locally
 
 ```bash
-cp .env.example .env.local
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open:
 
-The app works immediately in demo-ledger mode. Connect a compatible browser wallet to record state proofs on Solana Devnet. A LazorKit passkey adapter is documented as the production onboarding path.
+```text
+http://localhost:3000
+```
 
-## Validate
+## Workspace commands
 
 ```bash
-npm test
-npm run typecheck
+npm run dev
 npm run build
+npm run typecheck
+npm run test
 ```
 
-## Onchain program
+## Product principle
 
-The Anchor workspace is under `anchor/`. It is intentionally separate from the demo ledger so the product can be tested before deploying custody logic.
-
-Prerequisites: Rust, Solana CLI, and Anchor CLI.
-
-```bash
-cd anchor
-anchor build
-anchor test
-```
-
-Before deployment, run `anchor keys sync`, rebuild, and replace the placeholder program ID.
-
-## Important product boundaries
-
-This repository is a prototype, not production financial software. It does not provide custody, lending, insurance, investment returns, fiat conversion, or regulatory compliance. Live-money deployment requires security audits, licensed payment/off-ramp partners, consumer protection controls, and jurisdiction-specific legal review.
+> When money comes in, everything important gets prepared.
