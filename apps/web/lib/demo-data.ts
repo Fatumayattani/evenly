@@ -1,0 +1,105 @@
+import type { AllocationRule } from "@evenly/core";
+import type { ProductState } from "./types";
+
+export const defaultRules: AllocationRule[] = [
+  { bucket: "available", label: "Available now", percentage: 40, priority: 1 },
+  { bucket: "bills", label: "Bills", percentage: 20, priority: 2 },
+  { bucket: "payday", label: "Personal payday", percentage: 15, priority: 3 },
+  { bucket: "emergency", label: "Emergency", percentage: 10, priority: 4 },
+  { bucket: "groups", label: "Group commitments", percentage: 10, priority: 5 },
+  { bucket: "tax", label: "Tax reserve", percentage: 5, priority: 6 },
+];
+
+export const initialState: ProductState = {
+  activeSpace: "life",
+  currency: "KES",
+  rules: defaultRules,
+  balances: {
+    available: 18_400_00,
+    bills: 11_000_00,
+    payday: 43_000_00,
+    emergency: 21_600_00,
+    groups: 3_500_00,
+    tax: 8_200_00,
+  },
+  weeklyPaydayMinor: 10_000_00,
+  commitments: [
+    {
+      id: "rent",
+      title: "August rent",
+      subtitle: "Your share of Greenview Apartment",
+      targetMinor: 15_000_00,
+      preparedMinor: 11_000_00,
+      dueDate: "2026-08-01",
+      icon: "home",
+      sharedWith: ["Amina", "Wanjiku"],
+    },
+    {
+      id: "internet",
+      title: "Home internet",
+      subtitle: "Monthly plan",
+      targetMinor: 4_000_00,
+      preparedMinor: 4_000_00,
+      dueDate: "2026-07-15",
+      icon: "wifi",
+      sharedWith: [],
+    },
+    {
+      id: "emergency",
+      title: "Emergency protection",
+      subtitle: "Target: one month of essentials",
+      targetMinor: 45_000_00,
+      preparedMinor: 21_600_00,
+      dueDate: "2026-09-30",
+      icon: "shield",
+      sharedWith: [],
+    },
+  ],
+  groups: [
+    {
+      id: "future-builders",
+      name: "Future Builders",
+      purpose: "Shared capital for member business equipment",
+      goalMinor: 300_000_00,
+      treasuryMinor: 118_000_00,
+      contributionMinor: 5_000_00,
+      dueDate: "2026-07-18",
+      approvalsRequired: 3,
+      members: [
+        { id: "you", name: "You", role: "Member", contributedMinor: 0, status: "preparing" },
+        { id: "amina", name: "Amina", role: "Treasurer", contributedMinor: 5_000_00, status: "paid" },
+        { id: "james", name: "James", role: "Coordinator", contributedMinor: 5_000_00, status: "paid" },
+        { id: "zuri", name: "Zuri", role: "Member", contributedMinor: 2_500_00, status: "partial" },
+      ],
+      payoutProposal: {
+        id: "equipment-1",
+        title: "Purchase shared packaging machine",
+        recipient: "Supplier account",
+        amountMinor: 42_000_00,
+        approvals: 2,
+        executed: false,
+      },
+    },
+    {
+      id: "family-buffer",
+      name: "Family Buffer",
+      purpose: "Emergency support shared by four siblings",
+      goalMinor: 200_000_00,
+      treasuryMinor: 76_500_00,
+      contributionMinor: 3_000_00,
+      dueDate: "2026-07-25",
+      approvalsRequired: 2,
+      members: [
+        { id: "you", name: "You", role: "Admin", contributedMinor: 3_000_00, status: "paid" },
+        { id: "hani", name: "Hani", role: "Member", contributedMinor: 3_000_00, status: "paid" },
+        { id: "sam", name: "Sam", role: "Member", contributedMinor: 0, status: "preparing" },
+        { id: "maryan", name: "Maryan", role: "Member", contributedMinor: 0, status: "preparing" },
+      ],
+    },
+  ],
+  activity: [
+    { id: "a1", type: "allocation", title: "Client payment allocated", amountMinor: 60_000_00, at: "2026-07-09T14:12:00.000Z" },
+    { id: "a2", type: "group", title: "Future Builders contribution prepared", amountMinor: 3_500_00, at: "2026-07-09T14:12:00.000Z" },
+    { id: "a3", type: "bill", title: "Home internet fully prepared", amountMinor: 4_000_00, at: "2026-07-08T09:20:00.000Z" },
+  ],
+};

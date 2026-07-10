@@ -1,221 +1,63 @@
-# Evenly
+# Solana Financial Coordination MVP
 
-![Evenly Logo](./public/evenlogo.png)
+A working product prototype for coordinating personal and shared financial commitments on Solana.
 
+The product deliberately has **no final brand name yet**. The interface is organized around two universal spaces:
 
-**Split expenses instantly, fairly**
+- **Life** — income, upcoming bills, personal payday buffer, emergency savings, taxes, and selected shared household expenses.
+- **Groups** — any multi-person contribution arrangement with shared goals, transparent commitments, a treasury, and approval rules.
 
-Evenly is a modern household expense tracker that makes sharing costs simple, transparent, and instant using **Privy embedded wallets** on the **Movement blockchain**. No more awkward money conversations or messy spreadsheets.
+## Signature behavior
 
-## Built With
+When income arrives, allocation rules prepare the things that matter before their due dates. The app shows each commitment as **Ready**, **Building**, or **At risk**.
 
-- **Movement Blockchain** – [https://movement.xyz](https://movement.xyz)  
-- **Privy Wallets** – [https://privy.io](https://privy.io)  
+## Included
 
----
+- Polished mobile-first Next.js application
+- Real browser-wallet connection on Solana Devnet
+- Gas-sponsored onchain proof receipts using the Solana Memo program
+- Deterministic allocation engine with integer-safe rounding
+- Life dashboard and automatic income allocation
+- Group contribution readiness and treasury tracking
+- Multi-approval payout demo
+- Local persistence for a complete demo without a backend
+- Anchor program source for token-backed group treasuries and approval-controlled payouts
+- Unit tests for the allocation engine
 
-## Features
-
-### Instant Settlement
-
-* Expenses are split and settled immediately – no waiting until month-end
-* Real-time balance tracking shows what you paid vs what you owe
-
-### Smart Expense Management
-
-* Track rent, utilities, groceries, subscriptions, and other shared costs
-* Categorize expenses for better organization
-* View complete expense history with detailed breakdowns
-
-### Household Groups
-
-* Organize expenses by household
-* Invite roommates and track shared costs together
-* See who paid for what at a glance
-
-### Embedded Wallet Integration
-
-* Privy embedded wallet created automatically on first login
-* No external wallet installation required
-* Secure authentication via email or social login
-* Blockchain-powered transparency and security
-
-### Beautiful, Intuitive Interface
-
-* Modern design with smooth animations
-* Responsive layout for all devices
-* Clear visual hierarchy and balance summaries
-* Real-time updates
-
----
-
-## Tech Stack
-
-* **Frontend:** React 18 + TypeScript + Vite
-* **Styling:** Tailwind CSS
-* **Authentication:** Privy (embedded wallet)
-* **Blockchain:** Movement
-* **Icons:** Lucide React
-* **Build Tool:** Vite
-
----
-
-## Prerequisites
-
-* Node.js 18+ and npm
-* Privy account and App ID ([Get started](#))
-
----
-
-## Installation
-
-1. **Clone the repository**
+## Run the web app
 
 ```bash
-git clone https://github.com/Fatumayattani/evenly.git
-cd evenly
-```
-
-2. **Install dependencies**
-
-```bash
+cp .env.example .env.local
 npm install
-```
-
-3. **Configure environment variables**
-   Create a `.env` file in the root directory:
-
-```env
-VITE_PRIVY_APP_ID=your_privy_app_id
-```
-
-4. **Run the app**
-
-```bash
 npm run dev
 ```
 
-The app will be available at [http://localhost:5173](http://localhost:5173)
+Open `http://localhost:3000`.
 
----
+The app works immediately in demo-ledger mode. Connect a compatible browser wallet to record state proofs on Solana Devnet. A LazorKit passkey adapter is documented as the production onboarding path.
 
-## Building for Production
+## Validate
 
 ```bash
+npm test
+npm run typecheck
 npm run build
-npm run preview
 ```
 
-Production-ready files will be in the `dist/` directory.
+## Onchain program
 
----
+The Anchor workspace is under `anchor/`. It is intentionally separate from the demo ledger so the product can be tested before deploying custody logic.
 
-## Development Tools
+Prerequisites: Rust, Solana CLI, and Anchor CLI.
 
-* **Type Checking:** `npm run typecheck`
-* **Linting:** `npm run lint`
-
----
-
-## Project Structure
-
-```
-evenly/
-├── src/
-│   ├── components/
-│   │   ├── AddExpenseModal.tsx
-│   │   ├── AuthModal.tsx
-│   │   ├── Dashboard.tsx
-│   │   ├── ExpenseCard.tsx
-│   │   ├── LandingPage.tsx
-│   │   └── WalletSection.tsx
-│   ├── App.tsx
-│   ├── main.tsx
-│   ├── types.ts
-│   └── index.css
-├── .env
-├── tailwind.config.js
-├── vite.config.ts
-└── package.json
+```bash
+cd anchor
+anchor build
+anchor test
 ```
 
----
+Before deployment, run `anchor keys sync`, rebuild, and replace the placeholder program ID.
 
-## How It Works
+## Important product boundaries
 
-1. **Connect Wallet:** Users log in with email or social account. Privy automatically creates an embedded wallet.
-2. **Create Household:** Set up your household and invite roommates using wallet addresses or email.
-3. **Add Expenses:** Log shared expenses (rent, utilities, groceries, etc.) and specify who to split with.
-4. **Automatic Splitting:** Evenly calculates each person’s share and updates balances in real-time.
-5. **Track Balances:** Dashboard shows:
-
-   * Total you’ve paid
-   * Total you owe
-   * Net balance
-6. **Instant Settlement:** Payments are processed instantly via embedded wallets on the Movement blockchain.
-
----
-
-## Expense Categories
-
-* **Rent:** Monthly rent payments
-* **Utilities:** Electricity, water, internet, gas
-* **Groceries:** Shared food and household items
-* **Subscriptions:** Netflix, Spotify, shared services
-* **Other:** Miscellaneous expenses
-
----
-
-## Wallet Section
-
-* View embedded wallet address
-* Check wallet balance
-* Transaction history
-* Secure and transparent
-
----
-
-## Deployment
-
-Deploy to any static hosting service:
-
-* Vercel: `vercel deploy`
-* Netlify: `netlify deploy --prod`
-* AWS S3 + CloudFront
-* GitHub Pages
-
-Set environment variables in your hosting platform dashboard.
-
----
-
-## Security Best Practices
-
-* Never commit `.env` to version control
-* Validate all user inputs
-* Keep dependencies updated
-* Use HTTPS in production
-* Implement proper authentication checks
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
----
-
-## License
-
-MIT License
-
----
-
-## Support
-
-* Open an issue on GitHub
-* Check documentation
-
+This repository is a prototype, not production financial software. It does not provide custody, lending, insurance, investment returns, fiat conversion, or regulatory compliance. Live-money deployment requires security audits, licensed payment/off-ramp partners, consumer protection controls, and jurisdiction-specific legal review.
