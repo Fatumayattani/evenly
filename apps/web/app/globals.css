@@ -20,6 +20,72 @@ button { color: inherit; }
 a { color: inherit; }
 .app-shell { min-height: 100vh; display: grid; grid-template-columns: 248px minmax(0, 1fr); }
 .sidebar { position: sticky; top: 0; height: 100vh; padding: 28px 22px; background: #172d26; color: #f8f5ed; display: flex; flex-direction: column; }
+.evenly-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  width: fit-content;
+}
+
+.evenly-logo__mark {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.evenly-logo__coin {
+  fill: #52d3a4;
+}
+
+.evenly-logo__currency {
+  fill: #ffffff;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.evenly-logo__flow {
+  fill: none;
+  stroke: #08b98c;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.evenly-logo__bucket--one {
+  fill: #7eddbd;
+}
+
+.evenly-logo__bucket--two {
+  fill: #08b98c;
+}
+
+.evenly-logo__bucket--three {
+  fill: #4dbdc2;
+}
+
+.evenly-logo__wordmark {
+  color: #15231f;
+  font-family: Manrope, Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 750;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.evenly-logo--light .evenly-logo__wordmark {
+  color: #ffffff;
+}
+
+.evenly-logo--compact .evenly-logo__mark {
+  width: 34px;
+  height: 34px;
+}
+
+.mobile-brand {
+  display: none;
+}
 .brand-mark { display: flex; align-items: center; gap: 11px; }
 .brand-mark > span { width: 38px; height: 38px; border-radius: 13px; display: grid; place-items: center; background: var(--lime); color: #173228; font-size: 23px; }
 .brand-mark div { display: grid; gap: 2px; }
@@ -36,7 +102,7 @@ a { color: inherit; }
 .reset-button { margin-top: 12px; border: 0; background: transparent; color: #91a69d; display: flex; align-items: center; gap: 7px; padding: 10px; cursor: pointer; font-size: 12px; }
 .main-column { min-width: 0; }
 .topbar { min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 34px; border-bottom: 1px solid var(--line); background: rgba(245,242,235,.88); backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 20; }
-.topbar > div:first-of-type { display: grid; gap: 2px; }
+.topbar-copy { display: grid; gap: 2px; }
 .topbar p { margin: 0; color: var(--muted); font-size: 12px; }
 .topbar strong { font-family: Manrope, Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; }
 .topbar-actions { display: flex; align-items: center; gap: 9px; }
@@ -202,44 +268,129 @@ button.metric-card { cursor: pointer; }
 .success-icon { width: 54px; height: 54px; display: grid; place-items: center; border-radius: 50%; background: #dceee4; color: var(--green); margin: 4px auto 17px; }
 .success-view .allocation-results { text-align: left; }
 .spin { animation: spin .8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-@media (max-width: 1050px) {
-  .app-shell { grid-template-columns: 84px minmax(0,1fr); }
-  .sidebar { padding: 24px 14px; align-items: center; }
-  .brand-mark div, .main-nav span, .sidebar-note, .reset-button span { display: none; }
-  .main-nav button { justify-content: center; width: 50px; }
-  .reset-button { justify-content: center; }
-  .hero-card { grid-template-columns: 1fr 270px; }
-  .commitments-grid, .groups-grid { grid-template-columns: repeat(2, 1fr); }
-  .commitment-card:last-child { grid-column: span 2; }
-}
-@media (max-width: 760px) {
-  .app-shell { display: block; }
-  .sidebar { display: none; }
-  .topbar { padding: 13px 16px; min-height: 68px; }
-  .mobile-menu { display: block; }
-  .topbar > div:first-of-type { margin-right: auto; }
-  .topbar-actions .secondary-button, .topbar-actions .wallet-button span:not(.status-dot), .topbar-actions .wallet-button svg { display: none; }
-  .wallet-button { width: 40px; padding: 0; }
-  .add-income-button { width: 40px; padding: 0; font-size: 0; }
-  .content-area { padding: 18px 14px 40px; }
-  .hero-card { padding: 28px 24px; grid-template-columns: 1fr; }
-  .payday-orbit { display: none; }
-  .hero-copy h1 { font-size: 44px; }
-  .metrics-grid, .commitments-grid, .groups-grid { grid-template-columns: 1fr; }
-  .commitment-card:last-child { grid-column: auto; }
-  .allocation-card { grid-template-columns: 1fr; gap: 20px; padding: 22px; }
-  .allocation-row { grid-template-columns: 110px 1fr 32px; }
-  .groups-intro { padding: 27px 23px; display: grid; }
-  .privacy-rule { width: 100%; }
-  .detail-stat-grid { grid-template-columns: 1fr; }
-  .detail-stat-grid > div { border-right: 0; border-bottom: 1px solid var(--line); }
-  .detail-stat-grid > div:last-child { border-bottom: 0; }
-  .prepared-card { align-items: stretch; flex-direction: column; }
-  .proposal-card dl { grid-template-columns: 1fr; }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.field-help { margin: 6px 0 18px; color: var(--muted); font-size: 10px; }
-.group-modal-icon { margin-left: 0; }
-@media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; gap: 0; } }
+.evenly-logo__wordmark {
+  display: inline;
+}
+
+.main-nav span,
+.reset-button span {
+  display: inline;
+}
+
+.sidebar-note {
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    display: block;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .topbar {
+    padding: 13px 16px;
+    min-height: 68px;
+  }
+
+  .mobile-brand {
+    display: inline-flex;
+  }
+
+  .topbar-copy {
+    margin-right: auto;
+  }
+
+  .topbar-actions .secondary-button,
+  .topbar-actions .wallet-button span:not(.status-dot),
+  .topbar-actions .wallet-button svg {
+    display: none;
+  }
+
+  .wallet-button {
+    width: 40px;
+    padding: 0;
+  }
+
+  .add-income-button {
+    width: 40px;
+    padding: 0;
+    font-size: 0;
+  }
+
+  .content-area {
+    padding: 18px 14px 40px;
+  }
+
+  .hero-card {
+    padding: 28px 24px;
+    grid-template-columns: 1fr;
+  }
+
+  .payday-orbit {
+    display: none;
+  }
+
+  .hero-copy h1 {
+    font-size: 44px;
+  }
+
+  .metrics-grid,
+  .commitments-grid,
+  .groups-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .commitment-card:last-child {
+    grid-column: auto;
+  }
+
+  .allocation-card {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 22px;
+  }
+
+  .allocation-row {
+    grid-template-columns: 110px 1fr 32px;
+  }
+
+  .groups-intro {
+    padding: 27px 23px;
+    display: grid;
+  }
+
+  .privacy-rule {
+    width: 100%;
+  }
+
+  .detail-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-stat-grid > div {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .detail-stat-grid > div:last-child {
+    border-bottom: 0;
+  }
+
+  .prepared-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .proposal-card dl {
+    grid-template-columns: 1fr;
+  }
+}
